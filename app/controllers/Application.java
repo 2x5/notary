@@ -78,7 +78,7 @@ public class Application extends Controller {
     	Logger.debug("** stats requested by %s / %s", request.remoteAddress, request.host);
     	flash.success("%s", new Date());
     	render();
-    }
+    
     
     private static boolean allEmpty(String... strings) {
     	for (String s : strings) {
