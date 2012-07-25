@@ -1,0 +1,26 @@
+/** Main **/
+
+.fError, .fSuccess {
+    text-align: left;
+	padding: 5px 5px 5px 30px;
+    position: relative;
+	border: 1px solid #CCC;
+}
+/*
+.fError {
+    border-color: #C99;
+	color: white;
+	background: #C00;
+}
+*/
+.fError {
+    border-color: #C99;
+	color: black;
+	background: #FF9999;
+}
+
+.fSuccess {
+	border-color: #9C9;
+    color: #080;
+	background: #E2F9E3;
+}

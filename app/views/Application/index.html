@@ -1,0 +1,85 @@
+#{extends 'main.html' /}
+#{set title:'Texas Notary Search' /}
+
+	#{set 'moreStyles'}
+		<link rel="stylesheet" href="@{'/public/stylesheets/style.css'}">
+		<link rel="stylesheet" href="@{'/public/stylesheets/jquery-ui-1.8.4.custom.css'}">
+	#{/set}
+
+	#{set 'moreScripts'}
+		
+		<script type="text/javascript" language="javascript">
+			$(document).ready(function() 
+			    { 
+			     	$("#last").focus();
+			        $("#resultsTable").tablesorter({widgets: ['zebra']}); 
+			    } 
+			); 			 
+		</script>
+	#{/set}
+
+	<div class="container">
+		<div class="doc-section clearfix" id="forms">
+		<br/>
+						<h3>Texas Notary Search</h3>
+			    <img src="@{'/public/images/poweredBy.png'}" alt="Powered by MongoDB" title="${message0}">
+*{						<p>Powered by MongoDB</p>
+ }*
+						<div class="six columns alpha">
+							#{form @Application.search()}
+								<label for="last">Last Name:</label>
+							    #{field 'last'}
+            					<input id="last" type="text" name="${field.name}" size="10" value="${params?.last}"/> 
+    							#{/field}
+								
+								<label for="zip">Zip Code:</label>
+							    #{field 'zip'}
+            					<input id="zip" type="text" name="${field.name}" size="10" maxLength="5" value="${params?.zip}"/> 
+    							#{/field}    							
+
+*{  Disabled for now - hard limit of 100 rows
+								<label for="selectList">Limit number of results to:</label>
+								#{field 'limit'}
+								<select id="selectList" name="limit">
+									<option value="25">25</option>
+									<option value="50">50</option>
+									<option value="100">100</option>
+									<option value="0">No Limit</option>
+								</select>
+								#{/field}
+}*								
+								<input type="submit" value="Search" />&nbsp;&nbsp;
+								#{a @Application.index()} Clear #{/a}
+							#{/form}
+						</div>
+						
+			#{if results}
+			<div>
+				<p>${message1} </p>
+				<p>${message2} </p>
+
+			    <table id="resultsTable" class="tablesorter"> 
+			        <thead>
+			            <tr>
+			                <th>Last</th>
+			                <th>First</th>
+			                <th>Commission Expires</th>
+			                <th>Address</th>
+			            </tr>
+			        </thead>
+			        <tbody>
+			            #{list results, as:'notary'}
+                            <tr class="gradeA">
+			                    <td title="${notary.identity}">${notary.last}</td>
+			                    <td>${notary.first}</td>
+			                    <td>${notary.expires}</td>
+			                    <td title="${notary.mail}">${notary.city}, ${notary.state} ${notary.zip}</td>
+			                </tr>
+			            #{/list}
+			        </tbody>
+			    </table>
+			</div>    
+			#{/if}								
+			</div>
+						
+	</div><!-- container -->

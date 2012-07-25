@@ -1,0 +1,22 @@
+#{extends 'main.html' /}
+#{set title:'Performance' /}
+
+   <div class="container">
+	<h3>current stats :: #{a @Application.index()} notary search #{/a}</h3>
+	<hr>
+	
+*{ Response time and Throughput }*	
+<iframe src="https://rpm.newrelic.com/public/charts/a53gD1kLvZw" width="500" height="300" scrolling="no" frameborder="no"></iframe>
+	
+*{ Apdex Score }*		
+<iframe src="https://rpm.newrelic.com/public/charts/jDnTbIXPbHh" width="500" height="300" scrolling="no" frameborder="no"></iframe>
+	
+*{ Response time }*
+<iframe src="https://rpm.newrelic.com/public/charts/erkI5bkq9o9" width="500" height="300" scrolling="no" frameborder="no"></iframe>
+
+*{ Throughput }*
+<iframe src="https://rpm.newrelic.com/public/charts/9v0gzqkx67l" width="500" height="300" scrolling="no" frameborder="no"></iframe>						
+	
+*{ Memory usage }*	
+<iframe src="https://rpm.newrelic.com/public/charts/7QDNBNG5Cpp" width="500" height="300" scrolling="no" frameborder="no"></iframe>	
+	</div><!-- container -->
