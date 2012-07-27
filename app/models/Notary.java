@@ -15,6 +15,7 @@ public class Notary extends Model {
 	Long   identity;
 	
 	String last;
+	String last_s;  // lower case version of last, used for searching
 	String first;
 	String middle;
 	

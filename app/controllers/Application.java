@@ -40,7 +40,7 @@ public class Application extends Controller {
     	MorphiaQuery q = Notary.q().limit(limit);
     	
     	if (!allEmpty(last)) {
-    		q.filter("last", last);
+    		q.filter("last_s", last.toLowerCase());
     	}
     	if (!allEmpty(zip)) {
     		q.filter("zip", Integer.parseInt(zip));
@@ -58,7 +58,7 @@ public class Application extends Controller {
     	if (results.size() == 0) {
     		flash.error("No records found.");
     	} else if (countAll > limit) {
-    		flash.success("Results are limited to %s records.", limit);
+    		flash.success("Results limited to %s records.", limit);
     	}
     	
     	String message1 = "Retrieved " + results.size() + " rows in " + 
