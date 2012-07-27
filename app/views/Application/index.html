@@ -21,11 +21,16 @@
 	<div class="container">
 		<div class="doc-section clearfix" id="forms">
 		<br/>
-						<h3>Texas Notary Search</h3>
+
+						<h3 classe="">Texas Notary Search</h3>
+						<p>Source: Texas Secretary of State (July 20, 2012)</p>
+
+						
 			    <img src="@{'/public/images/poweredBy.png'}" alt="Powered by MongoDB" title="${message0}">
 *{						<p>Powered by MongoDB</p>
  }*
 						<div class="six columns alpha">
+												
 							#{form @Application.search()}
 								<label for="last">Last Name:</label>
 							    #{field 'last'}
