@@ -11,11 +11,21 @@ import play.mvc.Controller;
 
 import com.mongodb.CommandResult;
 import com.mongodb.DBCollection;
+import com.mongodb.DBObject;
 
 public class Application extends Controller {
 
     public static void index() {
     	flash.clear();
+        render();
+    }
+    
+    public static void index2() {
+    	flash.clear();
+        render();
+    }    
+    
+    public static void bootstrap() {
         render();
     }
     
@@ -32,28 +42,16 @@ public class Application extends Controller {
     		flash.error("Zip Code must be a 5-digit number.");
     		render();
     	}
-
-    	long start = System.currentTimeMillis();
-
     	if (limit == 0) limit = 100;
-    	
-    	MorphiaQuery q = Notary.q().limit(limit);
-    	
-    	if (!allEmpty(last)) {
-    		q.filter("last_s", last.toLowerCase());
-    	}
-    	if (!allEmpty(zip)) {
-    		q.filter("zip", Integer.parseInt(zip));
-    	}
-    	Logger.debug(q.getQueryObject().toString());
-    	
-    	List<Notary> results = q.asList();
-    	
-    	long stop =  System.currentTimeMillis();
-    	long countAll = q.count();
-    	
+
+    	MorphiaQuery q = getQuery(last, zip, limit);
+
+    	long start = System.currentTimeMillis(); 
+   		List<Notary> results = q.asList();
+   		long stop =  System.currentTimeMillis(); 
+
+   		long countAll = q.countAll();	
     	long stopCount =  System.currentTimeMillis();
-    	
     	
     	if (results.size() == 0) {
     		flash.error("No records found.");
@@ -74,10 +72,74 @@ public class Application extends Controller {
     	render(results, message0, message1, message2);
     }
     
+    
+    public static void query(String last, String zip, int limit) {
+    	renderJSON(runQuery(last, zip, 100));
+    }
+    
     public static void stats() {
     	Logger.debug("** stats requested by %s / %s", request.remoteAddress, request.host);
     	flash.success("%s", new Date());
     	render();
+    }
+    
+    public static void search2(String last, String zip, int limit) {
+    	Logger.debug("searching last[%s], zip[%s]", last, zip);
+    	
+    	flash.clear(); // not sure why needed but..
+    	
+    	if (allEmpty(last, zip)) {
+    		flash.error("Enter some search criteria.");
+    		render();
+    	}
+    	if (zip.length() != 0 && !zip.matches("\\d{5}")) {
+    		flash.error("Zip Code must be a 5-digit number.");
+    		render();
+    	}
+    	if (limit == 0) limit = 100;
+
+    	MorphiaQuery q = getQuery(last, zip, limit);
+
+    	long start = System.currentTimeMillis(); 
+   		List<Notary> results = q.asList();
+   		long stop =  System.currentTimeMillis(); 
+
+   		long countAll = q.countAll();	
+    	long stopCount =  System.currentTimeMillis();
+    	
+    	if (results.size() == 0) {
+    		flash.error("No records found.");
+    	} else if (countAll > limit) {
+    		flash.success("Results limited to %s records.", limit);
+    	}
+    	
+    	String message1 = "Retrieved " + results.size() + " rows in " + 
+    			(stop - start) + " ms. ";
+    	String message2 = "Counted " + countAll + " rows in " + 
+    			(stopCount - stop) + " ms." ;
+    	
+
+    	DBCollection notary = Model.db().getCollection("notary");
+    	CommandResult stats = notary.getDB().getStats();
+    	String message0 = " Stats: " + stats;
+
+    	render(results, message0, message1, message2);
+    }
+    
+    private static MorphiaQuery getQuery(String last, String zip, int limit) {
+    	MorphiaQuery q = Notary.q().limit(limit);
+    	if (!allEmpty(last)) {
+    		q.filter("last_s", last.toLowerCase());
+    	}
+    	if (!allEmpty(zip)) {
+    		q.filter("zip", Integer.parseInt(zip));
+    	}
+    	Logger.debug(q.getQueryObject().toString());
+    	return q;
+    }
+    
+    private static List<Notary> runQuery(String last, String zip, int limit) {
+    	return getQuery(last, zip, limit).asList();
     }
     
     private static boolean allEmpty(String... strings) {

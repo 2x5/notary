@@ -9,7 +9,16 @@ POST    /                                       Application.index
 GET     /search                                 Application.index
 POST    /search                                 Application.search
 
+GET     /index2                                 Application.index2
+POST    /index2                                 Application.index2
+GET     /search2                                Application.index2
+POST    /search2                                Application.search2
+
+GET     /query                                  Application.query 
+
 GET     /stats                                  Application.stats
+
+GET     /bootstrap                              Application.bootstrap
 
 # Ignore favicon requests
 GET     /favicon.ico                            404
