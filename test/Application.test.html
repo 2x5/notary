@@ -1,7 +1,45 @@
 *{ You can use plain selenium command using the selenium tag }*
 
-#{selenium}
-    // Open the home page, and check that no error occured
+#{selenium 'Basic Search Tests'}
+    // Open the home page, and check that no error occurred
     open('/')
     assertNotTitle('Application error')
+    
+	// Confirm the Title 
+	open('@{Application.index()}')
+	assertTextPresent('Texas Notary Search')
+
+	// Required field validation
+	clickAndWait('search')
+	assertTextPresent('Enter some')
+	
+	// Zip code validation
+	open('/')
+	type('zip', 'xD778!')
+	clickAndWait('search')
+	assertTextNotPresent('Commission Expires')
+    assertTextPresent('Zip Code must be a 5-digit number.')
+    
+	// Search by Last Name
+	open('/')
+	type('last', 'wilson')
+	clickAndWait('search')
+	assertTextPresent('Commission Expires')
+
+	// Reload page clears results
+    open('/')
+	assertTextNotPresent('Commission Expires')
+
+	// Search by Zip Code
+	type('zip', '78701')
+	clickAndWait('search')
+	assertTextPresent('Commission Expires')
+
+	// Search not found 
+    open('/')
+	type('last', 'Kramerwhackerreimerberg!')
+	clickAndWait('search')
+	assertTextNotPresent('Commission Expires')
+    assertTextPresent('No records found.')
+
 #{/selenium}
