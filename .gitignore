@@ -1,0 +1,7 @@
+logs
+precompiled
+bin
+eclipse
+tmp
+.project
+.classpath
