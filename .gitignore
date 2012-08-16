@@ -3,5 +3,6 @@ precompiled
 bin
 eclipse
 tmp
+test-result
 .project
 .classpath
